@@ -1,3 +1,4 @@
+import os
 import time
 import requests
 import threading
@@ -6,13 +7,13 @@ from datetime import datetime, timedelta
 from mattermostdriver import Driver
 
 # Mattermost settings
-MATTERMOST_URL = "chat.mattermost.com"  # Replace with your Mattermost URL
-BOT_TOKEN = "YOURTOKEN_OF_THE_BOT"  # Replace with your bot token
-TEAM_NAME = "MATTERMOST_TEAMNAME"  # Replace with your team name (slug)
+MATTERMOST_URL = os.getenv("MATTERMOST_URL")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+TEAM_NAME = os.getenv("TEAM_NAME")
 
 # Ollama settings
-OLLAMA_API_URL = "http://localhost:11434/api/generate"  # Correct Ollama API endpoint
-OLLAMA_MODEL = "mistral"  # Specify the model you want to use
+OLLAMA_API_URL = os.getenv("OLLAMA_API_URL")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
 
 # Enable or disable context tracking
 ENABLE_CONTEXT_TRACKING = True  # Set to True to enable context tracking
@@ -229,7 +230,7 @@ def message_poller():
         # Poll every half second
         time.sleep(1)
 
-if __name__ == "__main__":
+def main():
     # Start the message poller thread
     poller_thread = threading.Thread(target=message_poller, daemon=True)
     poller_thread.start()
@@ -241,3 +242,6 @@ if __name__ == "__main__":
     # Keep the main thread alive to prevent program exit
     while True:
         time.sleep(1)
+
+if __name__ == "__main__":
+    main()
