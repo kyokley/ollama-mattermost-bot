@@ -1,7 +1,7 @@
 [project]
 name = "ollama-mattermost-bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "Nix Ollama Chatbot for Mattermost"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
