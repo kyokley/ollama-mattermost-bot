@@ -2,13 +2,23 @@ import os
 import time
 import requests
 import threading
+from pathlib import Path
 from queue import Queue
 from datetime import datetime, timedelta
 from mattermostdriver import Driver
 
 # Mattermost settings
 MATTERMOST_URL = os.getenv("MATTERMOST_URL")
+
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    try:
+        if token_path := os.getenv("BOT_TOKEN_PATH"):
+            with open(Path(token_path)) as f:
+                BOT_TOKEN = f.read().strip()
+    except Exception:
+        raise Exception("FAIL: No bot token has been provided")
+
 TEAM_NAME = os.getenv("TEAM_NAME")
 
 # Ollama settings
