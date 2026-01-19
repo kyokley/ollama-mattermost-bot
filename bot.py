@@ -76,7 +76,7 @@ def get_ollama_response(prompt, context=None):
         print(f"[DEBUG] Sending to Ollama: {data}")
 
     try:
-        response = requests.post(OLLAMA_API_URL, json=data, headers=headers)
+        response = requests.post(f"{OLLAMA_API_URL}/api/generate", json=data, headers=headers)
         if response.status_code == 200:
             # Parse the response from Ollama
             ollama_response = response.json()
@@ -140,6 +140,7 @@ def message_processor():
 
         except Exception as e:
             print(f"Error processing message: {e}")
+
 
 # Function to get the team by name
 def get_team_by_name(team_name):
@@ -240,8 +241,14 @@ def main():
     processor_thread.start()
 
     # Keep the main thread alive to prevent program exit
-    while True:
-        time.sleep(1)
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nReceived KeyboardInterrupt. Shutting down gracefully...")
+        # The daemon threads will automatically terminate when the main thread exits
+        # We can add any cleanup code here if needed
+        print("Shutdown complete.")
 
 if __name__ == "__main__":
     main()
